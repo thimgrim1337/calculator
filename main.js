@@ -1,11 +1,32 @@
 class Calculator {
-  static add = (a, b) => console.log(a + b);
-  static substract = (a, b) => console.log(a - b);
-  static multipy = (a, b) => console.log(a * b);
-  static divide = (a, b) => console.log(a / b);
+  _a = undefined;
+  _b = undefined;
+  _result = 0;
+
+  static sum = (a, b) => a + b;
+  static substract = (a, b) => a - b;
+  static multiply = (a, b) => a * b;
+  static divide = (a, b) => a / b;
+
+  static operate(a, b, cb) {
+    return cb(a, b);
+  }
 }
 
-Calculator.add(1, 2);
-Calculator.substract(1, 2);
-Calculator.multipy(1, 2);
-Calculator.divide(1, 2);
+class Event {
+  static captureInput() {
+    this.calcButtons = document.querySelectorAll('button');
+
+    this.calcButtons.forEach((button) =>
+      button.addEventListener('click', (e) => {
+        console.log(e.target.textContent);
+      })
+    );
+  }
+
+  static init() {
+    this.captureInput();
+  }
+}
+
+Event.init();
