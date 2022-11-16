@@ -11,9 +11,14 @@ class Calculator {
   };
 
   static setOperator = (operator) => {
+    if (this.currentOperand === '') return;
+    if (this.prevOperand !== '') this.operate();
     this.operator = operator;
-    console.log(this.operator);
+    this.prevOperand = this.currentOperand;
+    this.currentOperand = '';
   };
+
+  static operate = () => {};
 
   static reset = () => {
     this.prevOperand = '';
@@ -33,6 +38,7 @@ class Event {
     this.operationButtons.forEach((button) =>
       button.addEventListener('click', () => {
         Calculator.setOperator(button.innerText);
+        UI.updateDisplay();
       })
     );
   };
@@ -43,8 +49,10 @@ class Event {
 }
 
 class UI {
-  static updateDisplay = () =>
-    (Event.currentOperand.innerText = Calculator.currentOperand);
+  static updateDisplay = () => {
+    Event.currentOperand.innerText = Calculator.currentOperand;
+    Event.prevOperand.innerText = Calculator.prevOperand;
+  };
 }
 
 Event.numberButtons = document.querySelectorAll('[data-number]');
