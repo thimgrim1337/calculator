@@ -14,7 +14,7 @@ class Calculator {
     if (this.currentOperand === '') return;
     if (this.prevOperand !== '') this.operate();
     this.operator = operator;
-    this.prevOperand = `${this.currentOperand} ${this.operator}`;
+    this.prevOperand = this.currentOperand;
     this.currentOperand = '';
   };
 
@@ -46,11 +46,13 @@ class Calculator {
         result = this.modulo(prev, current);
         break;
     }
-    this.prevOperand = '';
     this.currentOperand = result;
+    this.prevOperand = '';
+    this.operator = undefined;
   };
 
-  static clearCurrent = () => (this.currentOperand = '');
+  static delete = () =>
+    (this.currentOperand = this.currentOperand.slice(0, -1));
 
   static reset = () => {
     this.prevOperand = '';
@@ -81,13 +83,13 @@ class Event {
     });
 
     this.allClearButton.addEventListener('click', () => {
-      UI.resetDisplay();
       Calculator.reset();
+      UI.updateDisplay();
     });
 
     this.deleteButton.addEventListener('click', () => {
-      UI.delete();
-      Calculator.clearCurrent();
+      Calculator.delete();
+      UI.updateDisplay();
     });
   };
 
@@ -97,18 +99,36 @@ class Event {
 }
 
 class UI {
+  static getDisplayNumber = (number) => {
+    const stringNumber = number.toString();
+    const integerDigits = parseFloat(stringNumber.split('.')[0]);
+    const decimalDigits = stringNumber.split('.')[1];
+    let integerDisplay;
+    if (isNaN(integerDigits)) {
+      integerDisplay = '';
+    } else {
+      integerDisplay = integerDigits.toLocaleString('en', {
+        maximumFractionDigits: 0,
+      });
+    }
+    if (decimalDigits != null) {
+      return `${integerDisplay}.${decimalDigits}`;
+    } else {
+      return integerDisplay;
+    }
+  };
+
   static updateDisplay = () => {
-    Event.currentOperand.innerText = Calculator.currentOperand;
-    Event.prevOperand.innerText = Calculator.prevOperand;
-  };
-
-  static resetDisplay = () => {
-    Event.currentOperand.innerText = '';
-    Event.prevOperand.innerText = '';
-  };
-
-  static delete = () => {
-    Event.currentOperand.innerText = '';
+    Event.currentOperand.innerText = this.getDisplayNumber(
+      Calculator.currentOperand
+    );
+    if (Calculator.operator != null) {
+      Event.prevOperand.innerText = `${this.getDisplayNumber(
+        Calculator.prevOperand
+      )} ${Calculator.operator}`;
+    } else {
+      Event.prevOperand.innerText = '';
+    }
   };
 }
 
