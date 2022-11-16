@@ -6,38 +6,50 @@
 
 body {
   font-family: 'Poppins', sans-serif;
+  height: 100vh;
 }
 
 .calc {
-  position: absolute;
+  position: relative;
+  width: 300px;
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  border: 1px solid black;
 }
 
 .calc-screen {
-  height: 10%;
-  border: 5px solid black;
-  font-size: 3rem;
+  background-color: rgb(20, 20, 20);
+  color: white;
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 10px;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-right: 10px;
+}
+
+.prevOperand {
+  font-size: 1.5rem;
+  color: #ddd;
+}
+
+.currentOperand {
+  font-size: 2rem;
 }
 
 .calc-panel {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  height: 80%;
+  gap: 3px;
 }
 
 .calc-panel button {
-  min-width: 25%;
-  font-size: 2rem;
+  width: calc(25% - 3px);
+  padding: 10px 0;
+  background-color: white;
+  font-size: 1.5rem;
+  border: 1px solid black;
+  border-radius: 5px;
 }
 
-.zero {
-  flex-grow: 1;
+.calc-panel button:hover {
+  background-color: #ddd;
 }
